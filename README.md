@@ -13,5 +13,5 @@ This repository contains a couple of .NET code analyzers, built with NDepend:
 3. Go to the output folder and run the soltion. 
 E.g.: 
 ```bash
-CodeAnalyzer.App.exe -TopLevelInputFolder c:\path\to\input\folder\
+CodeAnalyzer.App.exe -TopLevelInputFolder c:\path\to\input\folder\ -OutputFolder .\output\
 ```
