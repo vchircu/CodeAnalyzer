@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{385539F8-2DC3-41DC-ACDC-21FAD3DFBFD3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CodeAnalyzer</RootNamespace>
+    <AssemblyName>CodeAnalyzer</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSharpFunctionalExtensions, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSharpFunctionalExtensions.2.3.0\lib\net461\CSharpFunctionalExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="NDepend.API, Version=2019.3.0.9290, Culture=neutral, PublicKeyToken=02f4313b97e3f583, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\NDepend.API.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.9.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DetectionStrategies\BlobMethod.cs" />
+    <Compile Include="DetectionStrategies\ClassificationDesignSmellDetectionStrategy.cs" />
+    <Compile Include="DetectionStrategies\DataClass.cs" />
+    <Compile Include="DetectionStrategies\DesignSmell.cs" />
+    <Compile Include="DetectionStrategies\DesignSmellsDetection.cs" />
+    <Compile Include="DetectionStrategies\DispersedCoupling.cs" />
+    <Compile Include="DetectionStrategies\FeatureEnvy.cs" />
+    <Compile Include="DetectionStrategies\GodClass.cs" />
+    <Compile Include="DetectionStrategies\IDetectMethodDesignSmell.cs" />
+    <Compile Include="DetectionStrategies\IDetectTypeDesignSmell.cs" />
+    <Compile Include="DetectionStrategies\IntensiveCoupling.cs" />
+    <Compile Include="DetectionStrategies\RefusedParentBequest.cs" />
+    <Compile Include="DetectionStrategies\ShotgunSurgery.cs" />
+    <Compile Include="DetectionStrategies\TraditionBreaker.cs" />
+    <Compile Include="Metrics\AccessToForeignDataForMethod.cs" />
+    <Compile Include="Metrics\AccessToForeignDataForType.cs" />
+    <Compile Include="Metrics\AverageMethodWeight.cs" />
+    <Compile Include="Metrics\BaseClassOverridingRatio.cs" />
+    <Compile Include="Metrics\BaseClassUsageRatio.cs" />
+    <Compile Include="Metrics\ClassificationExtensions.cs" />
+    <Compile Include="Metrics\CodeElementExtensions.cs" />
+    <Compile Include="Metrics\CouplingDispersion.cs" />
+    <Compile Include="Metrics\CouplingExtensions.cs" />
+    <Compile Include="Metrics\CouplingIntensity.cs" />
+    <Compile Include="Metrics\ForeignDataExtensions.cs" />
+    <Compile Include="Metrics\ForeignDataProviders.cs" />
+    <Compile Include="Metrics\LocalityOfAttributeAccess.cs" />
+    <Compile Include="Metrics\NumberOfAccessedVariables.cs" />
+    <Compile Include="Metrics\NumberOfAccessorMethods.cs" />
+    <Compile Include="Metrics\NumberOfAddedServices.cs" />
+    <Compile Include="Metrics\NumberOfProtectedMembers.cs" />
+    <Compile Include="Metrics\NumberOfPublicAttributes.cs" />
+    <Compile Include="Metrics\PercentageOfNewlyAddedServices.cs" />
+    <Compile Include="Metrics\TotalClassCohesion.cs" />
+    <Compile Include="Metrics\WeightedMethodCount.cs" />
+    <Compile Include="Metrics\WeightOfAClass.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StructuralRelations\StructuralRelation.cs" />
+    <Compile Include="StructuralRelations\StructuralRelationsBuilder.cs" />
+    <Compile Include="Thresholds\CommonFractionThreshold.cs" />
+    <Compile Include="TypeExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
