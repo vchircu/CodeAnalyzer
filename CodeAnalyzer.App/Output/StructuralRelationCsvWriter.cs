@@ -19,7 +19,7 @@
                          {
                              ExternalCalls = r.NumberOfCallsToMethods,
                              ExternalData = r.NumberOfCallsToPropertiesOrFields,
-                             Hierarchy = r.IsTargetPartOfSourcesHierarchy ? 1 : 0,
+                             Hierarchy = r.HierarchyRelations,
                              Source = r.Source,
                              Target = r.Target
                          });

@@ -11,7 +11,7 @@
 
     public class StructuralRelation
     {
-        public bool IsTargetPartOfSourcesHierarchy { get; private set; }
+        public int HierarchyRelations { get; private set; }
         public string Source { get; private set; }
         public string Target { get; private set; }
         public int NumberOfCallsToMethods { get; private set; }
@@ -32,23 +32,28 @@
                 return Maybe<StructuralRelation>.None;
             }
 
-            var isHierarchy = source.HierarchyIncludingImplementedInterfaces().Contains(target);
-            var externalCalls = isHierarchy ? 0 : target.Methods.Count(m => !m.IsPropertyOrField() && source.IsUsingMethod(m));
-            var externalData = isHierarchy ? 0 : target.Members.Count(m => m.IsPropertyOrField() && source.IsUsing(m));
+            int hierarchySpecificRelations = ComputeHierarchyRelations(source, target);
+            var externalCalls = hierarchySpecificRelations > 0 ? 0 : target.Methods.Count(m => !m.IsPropertyOrField() && source.IsUsingMethod(m));
+            var externalData = hierarchySpecificRelations > 0 ? 0 : target.Members.Count(m => m.IsPropertyOrField() && source.IsUsing(m));
 
-            if (!isHierarchy && externalCalls == 0 && externalData == 0)
+            if (hierarchySpecificRelations == 0 && externalCalls == 0 && externalData == 0)
             {
                 return Maybe<StructuralRelation>.None;
             }
 
             return Maybe<StructuralRelation>.From(new StructuralRelation
             {
-                IsTargetPartOfSourcesHierarchy = isHierarchy,
+                HierarchyRelations = hierarchySpecificRelations,
                 NumberOfCallsToMethods = externalCalls,
                 NumberOfCallsToPropertiesOrFields = externalData,
                 Source = sourceSourceFile,
                 Target = targetSourceFile
             });
+        }
+
+        private static int ComputeHierarchyRelations(IType source, IType target)
+        {
+            return source.HierarchyIncludingImplementedInterfaces().Contains(target) ? 0 : 1;
         }
     }
 }
