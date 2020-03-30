@@ -25,11 +25,20 @@
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
                         {
-                            Name = "Blob Method", Severity = cyclo, SourceFile = m.ParentType.SourceFile(), Source = m
+                            Name = "Blob Method", Severity = CalculateSeverity(loc, cyclo, maxNesting), SourceFile = m.ParentType.SourceFile(), Source = m
                         });
             }
 
             return Maybe<DesignSmell>.None;
+        }
+
+        private static double CalculateSeverity(uint loc, ushort cyclo, ushort maxNesting)
+        {
+            var severityCyclo = LinearNormalization.WithMeasurementRange(3, 15).ValueFor(cyclo);
+            var severityNesting = LinearNormalization.WithMeasurementRange(3, 7).ValueFor(maxNesting);
+            var severityLoc = LinearNormalization.WithMeasurementRange(100, 500).ValueFor(loc);
+
+            return (2 * severityCyclo + 2 * severityNesting + severityLoc) / 5;
         }
     }
 }
