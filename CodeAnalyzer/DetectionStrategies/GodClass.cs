@@ -32,8 +32,7 @@
 
         private static double CalculateSeverity(int atfd)
         {
-            var linearNormalization = LinearNormalization.WithMeasurementRange(Few, 20);
-            return linearNormalization.ValueFor(atfd);
+            return LinearNormalization.WithMeasurementRange(Few, 20).ValueFor(atfd);
         }
     }
 }

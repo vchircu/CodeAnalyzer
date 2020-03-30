@@ -49,9 +49,7 @@
 
         private static double SeverityExposure(IList<IMember> publicAttributes, IList<IMember> accessors)
         {
-            var linearNormalization = LinearNormalization.WithMeasurementRange(Few, 20);
-
-            return linearNormalization.ValueFor(publicAttributes.Count + accessors.Count);
+            return LinearNormalization.WithMeasurementRange(Few, 20).ValueFor(publicAttributes.Count + accessors.Count);
         }
 
         private static double SeverityExploit(IList<IMember> publicAttributes, IList<IMember> accessors, IType type)
@@ -66,9 +64,7 @@
             HashSet<IType> classesUsingPublicData = methodsUsingData.Select(m => m.ParentType).ToHashSetEx();
             classesUsingPublicData.Remove(type);
 
-            var linearNormalization = LinearNormalization.WithMeasurementRange(2, 10);
-
-            return linearNormalization.ValueFor(classesUsingPublicData.Count);
+            return LinearNormalization.WithMeasurementRange(2, 10).ValueFor(classesUsingPublicData.Count);
         }
     }
 }
