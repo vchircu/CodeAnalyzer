@@ -23,9 +23,18 @@
 
         public double ValueFor(double measurement)
         {
-            var maxedMeasurement = Math.Min(measurement, _measurementRangeMax);
-            return (maxedMeasurement - _measurementRangeMin) / (_measurementRangeMax - _measurementRangeMin)
+            var adjustedMeasurement = EnsureMeasurementIsInRange(measurement);
+
+            return (adjustedMeasurement - _measurementRangeMin) / (_measurementRangeMax - _measurementRangeMin)
                    * (_desiredRangeMax - _desiredRangeMin) + _desiredRangeMin;
+        }
+
+        private double EnsureMeasurementIsInRange(double measurement)
+        {
+            var adjustedMeasurement = Math.Min(measurement, _measurementRangeMax);
+            adjustedMeasurement = Math.Max(adjustedMeasurement, _measurementRangeMin);
+
+            return adjustedMeasurement;
         }
     }
 }

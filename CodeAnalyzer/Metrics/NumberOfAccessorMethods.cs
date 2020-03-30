@@ -5,14 +5,9 @@
 
     using NDepend.CodeModel;
 
-    public class NumberOfAccessorMethods
+    public static class NumberOfAccessorMethods
     {
-        public static int Value(IType type)
-        {
-            return AccessorsFor(type).Count();
-        }
-
-        private static IEnumerable<IMember> AccessorsFor(IType type)
+        public static IEnumerable<IMember> Accessors(this IType type)
         {
             return type.Methods.Where(m => m.IsPublic && m.IsProperty() && !m.IsAbstract && !m.IsStatic);
         }

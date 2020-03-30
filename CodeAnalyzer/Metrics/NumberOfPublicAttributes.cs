@@ -5,14 +5,9 @@
 
     using NDepend.CodeModel;
 
-    public class NumberOfPublicAttributes
+    public static class NumberOfPublicAttributes
     {
-        public static int Value(IType type)
-        {
-            return PublicAttributesFor(type).Count();
-        }
-
-        private static IEnumerable<IMember> PublicAttributesFor(IType type)
+        public static IEnumerable<IMember> PublicAttributes(this IType type)
         {
             return type.Fields.Where(f => f.IsPublic && !f.IsInitOnly && !f.IsStatic);
         }
