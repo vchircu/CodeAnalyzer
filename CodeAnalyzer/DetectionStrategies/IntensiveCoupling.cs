@@ -26,13 +26,21 @@
                     new DesignSmell
                         {
                             Name = "Intensive Coupling",
-                            Severity = cint,
+                            Severity = CalculateSeverity(cint, cdisp),
                             SourceFile = m.ParentType.SourceFile(),
                             Source = m
                         });
             }
 
             return Maybe<DesignSmell>.None;
+        }
+
+        private static double CalculateSeverity(int cint, double cdisp)
+        {
+            var severityCdisp = LinearNormalization.WithMeasurementRange(3, 9).ValueFor(cdisp);
+            var severityCint = LinearNormalization.WithMeasurementRange(7, 21).ValueFor(cint);
+
+            return (3 * severityCdisp + severityCint) / 4;
         }
     }
 }
