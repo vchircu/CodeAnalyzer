@@ -63,6 +63,7 @@
     <Compile Include="DetectionStrategies\IDetectMethodDesignSmell.cs" />
     <Compile Include="DetectionStrategies\IDetectTypeDesignSmell.cs" />
     <Compile Include="DetectionStrategies\IntensiveCoupling.cs" />
+    <Compile Include="DetectionStrategies\LinearNormalization.cs" />
     <Compile Include="DetectionStrategies\RefusedParentBequest.cs" />
     <Compile Include="DetectionStrategies\ShotgunSurgery.cs" />
     <Compile Include="DetectionStrategies\TraditionBreaker.cs" />
