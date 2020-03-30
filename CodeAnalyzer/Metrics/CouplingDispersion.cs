@@ -8,7 +8,14 @@
     {
         public static double Value(IMethod method)
         {
-            return (double)method.ProvidersForCoupledMethods().Count() / CouplingIntensity.Value(method);
+            var cint = CouplingIntensity.Value(method);
+
+            if (cint == 0)
+            {
+                return 0;
+            }
+
+            return (double)method.ProvidersForCoupledMethods().Count() / cint;
         }
     }
 }

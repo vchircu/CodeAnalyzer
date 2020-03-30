@@ -27,11 +27,25 @@
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
                         {
-                            Name = "Shotgun Surgery", Severity = cm, SourceFile = m.ParentType.SourceFile(), Source = m
+                            Name = "Shotgun Surgery", Severity = CalculateSeverity(cm, cc, m), SourceFile = m.ParentType.SourceFile(), Source = m
                         });
             }
 
             return Maybe<DesignSmell>.None;
+        }
+
+        private static double CalculateSeverity(int icio, int icdo, IMethod method)
+        {
+            var severityIcio = LinearNormalization.WithMeasurementRange(7, 21).ValueFor(icio);
+            var severityIcdo = LinearNormalization.WithMeasurementRange(3, 9).ValueFor(icdo);
+
+            var ocio = CouplingIntensity.Value(method);
+            var severityOcio = LinearNormalization.WithMeasurementRange(7, 21).ValueFor(ocio);
+            
+            var ocdo = CouplingDispersion.Value(method);
+            var severityOcdo = LinearNormalization.WithMeasurementRange(3, 9).ValueFor(ocdo);
+
+            return (2 * severityIcio + 2 * severityIcdo + severityOcio + severityOcdo) / 6;
         }
     }
 }
