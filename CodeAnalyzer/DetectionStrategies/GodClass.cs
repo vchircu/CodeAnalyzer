@@ -32,7 +32,7 @@
 
         private static double SeverityFor(int atfd)
         {
-            var linearNormalization = LinearNormalization.WithMeasurementAndDesiredRange(Few, 20, 1, 10);
+            var linearNormalization = LinearNormalization.WithMeasurementRange(Few, 20);
             return linearNormalization.ValueFor(atfd);
         }
     }

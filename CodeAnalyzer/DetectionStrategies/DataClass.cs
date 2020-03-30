@@ -49,7 +49,7 @@
 
         private static double SeverityExposure(IList<IMember> publicAttributes, IList<IMember> accessors)
         {
-            var linearNormalization = LinearNormalization.WithMeasurementAndDesiredRange(Few, 20, 1, 10);
+            var linearNormalization = LinearNormalization.WithMeasurementRange(Few, 20);
 
             return linearNormalization.ValueFor(publicAttributes.Count + accessors.Count);
         }
@@ -66,7 +66,7 @@
             HashSet<IType> classesUsingPublicData = methodsUsingData.Select(m => m.ParentType).ToHashSetEx();
             classesUsingPublicData.Remove(type);
 
-            var linearNormalization = LinearNormalization.WithMeasurementAndDesiredRange(2, 10, 1, 10);
+            var linearNormalization = LinearNormalization.WithMeasurementRange(2, 10);
 
             return linearNormalization.ValueFor(classesUsingPublicData.Count);
         }

@@ -9,14 +9,14 @@
         private double _desiredRangeMin;
         private double _desiredRangeMax;
 
-        public static LinearNormalization WithMeasurementAndDesiredRange(int measurementMin, int measurementMax, int desiredMin, int desiredMax)
+        public static LinearNormalization WithMeasurementRange(int measurementMin, int measurementMax)
         {
             var linearNormalization = new LinearNormalization
                                           {
                                               _measurementRangeMin = measurementMin,
                                               _measurementRangeMax = measurementMax,
-                                              _desiredRangeMin = desiredMin,
-                                              _desiredRangeMax = desiredMax
+                                              _desiredRangeMin = 1,
+                                              _desiredRangeMax = 10
                                           };
             return linearNormalization;
         }
