@@ -31,14 +31,14 @@
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
                         {
-                            Name = "Data Class", Severity = SeverityFor(publicAttributes, accessors, t), SourceFile = t.SourceFile(), Source = t
+                            Name = "Data Class", Severity = CalculateSeverity(publicAttributes, accessors, t), SourceFile = t.SourceFile(), Source = t
                         });
             }
 
             return Maybe<DesignSmell>.None;
         }
 
-        private static double SeverityFor(IList<IMember> publicAttributes, IList<IMember> accessors, IType type)
+        private static double CalculateSeverity(IList<IMember> publicAttributes, IList<IMember> accessors, IType type)
         {
             var severityExploit = SeverityExploit(publicAttributes, accessors, type);
 

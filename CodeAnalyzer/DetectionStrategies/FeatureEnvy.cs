@@ -22,14 +22,14 @@
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
                         {
-                            Name = "Feature Envy", Severity = SeverityFor(atfd), SourceFile = m.ParentType.SourceFile(), Source = m
+                            Name = "Feature Envy", Severity = CalculateSeverity(atfd), SourceFile = m.ParentType.SourceFile(), Source = m
                         });
             }
 
             return Maybe<DesignSmell>.None;
         }
 
-        private static double SeverityFor(int atfd)
+        private static double CalculateSeverity(int atfd)
         {
             var linearNormalization = LinearNormalization.WithMeasurementRange(Few, 20);
             return linearNormalization.ValueFor(atfd);

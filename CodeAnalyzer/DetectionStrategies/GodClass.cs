@@ -23,14 +23,14 @@
             {
                 return Maybe<DesignSmell>.From(new DesignSmell
                                                    {
-                                                       Name = "God Class", Severity = SeverityFor(atfd), SourceFile = t.SourceFile(), Source = t
+                                                       Name = "God Class", Severity = CalculateSeverity(atfd), SourceFile = t.SourceFile(), Source = t
                                                    });
             }
 
             return Maybe<DesignSmell>.None;
         }
 
-        private static double SeverityFor(int atfd)
+        private static double CalculateSeverity(int atfd)
         {
             var linearNormalization = LinearNormalization.WithMeasurementRange(Few, 20);
             return linearNormalization.ValueFor(atfd);
