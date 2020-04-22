@@ -24,20 +24,5 @@
                 m => !m.IsClassConstructor && !m.IsConstructor && !m.IsStatic
                      && m.OverriddensBase.ParentTypes().Contains(type.BaseClass));
         }
-
-        public static IEnumerable<IMethod> PublicMethods(this IType type)
-        {
-            return type.Methods.Where(m => m.IsPublicNonStatic());
-        }
-
-        public static IEnumerable<IMethod> NewlyAddedMethods(this IType type)
-        {
-            return type.Methods.Where(m => m.IsPublicNonStatic() && !m.OverriddensBase.Any());
-        }
-
-        private static bool IsPublicNonStatic(this IMethod method)
-        {
-            return method.IsPublic && !method.IsClassConstructor && !method.IsConstructor && !method.IsStatic;
-        }
     }
 }

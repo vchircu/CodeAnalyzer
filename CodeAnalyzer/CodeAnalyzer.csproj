@@ -80,12 +80,11 @@
     <Compile Include="Metrics\ForeignDataExtensions.cs" />
     <Compile Include="Metrics\ForeignDataProviders.cs" />
     <Compile Include="Metrics\LocalityOfAttributeAccess.cs" />
+    <Compile Include="Metrics\NopOverridingMethods.cs" />
     <Compile Include="Metrics\NumberOfAccessedVariables.cs" />
     <Compile Include="Metrics\NumberOfAccessorMethods.cs" />
-    <Compile Include="Metrics\NumberOfAddedServices.cs" />
     <Compile Include="Metrics\NumberOfProtectedMembers.cs" />
     <Compile Include="Metrics\NumberOfPublicAttributes.cs" />
-    <Compile Include="Metrics\PercentageOfNewlyAddedServices.cs" />
     <Compile Include="Metrics\TotalClassCohesion.cs" />
     <Compile Include="Metrics\WeightedMethodCount.cs" />
     <Compile Include="Metrics\WeightOfAClass.cs" />
