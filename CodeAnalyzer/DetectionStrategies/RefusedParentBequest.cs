@@ -1,7 +1,5 @@
 ﻿namespace CodeAnalyzer.DetectionStrategies
 {
-    using System;
-
     using CodeAnalyzer.Metrics;
     using CodeAnalyzer.Thresholds;
 
@@ -35,13 +33,21 @@
                     new DesignSmell
                         {
                             Name = "Refused Parent Bequest",
-                            Severity = Math.Min((double)bur, bovr) * 100,
+                            Severity = CalculateSeverity(bur, bovr),
                             SourceFile = t.SourceFile(),
                             Source = t
                         });
             }
 
             return Maybe<DesignSmell>.None;
+        }
+
+        private static double CalculateSeverity(double bur, double bovr)
+        {
+            var severityBur = LinearNormalization.WithMeasurementRange(0.75, 1).ValueFor(1 - bur);
+            var severityBovr = LinearNormalization.WithMeasurementRange(0.75, 1).ValueFor(1 - bovr);
+
+            return (severityBur + severityBovr) / 2;
         }
     }
 }

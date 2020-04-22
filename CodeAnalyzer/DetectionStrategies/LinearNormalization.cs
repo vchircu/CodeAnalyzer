@@ -5,20 +5,32 @@
     internal class LinearNormalization
     {
         private double _measurementRangeMin;
+
         private double _measurementRangeMax;
+
         private double _desiredRangeMin;
+
         private double _desiredRangeMax;
 
-        public static LinearNormalization WithMeasurementRange(int measurementMin, int measurementMax)
+        public static LinearNormalization WithMeasurementAndDesiredRange(
+            double measurementMin,
+            double measurementMax,
+            double desiredMin,
+            double desiredMax)
         {
             var linearNormalization = new LinearNormalization
                                           {
                                               _measurementRangeMin = measurementMin,
                                               _measurementRangeMax = measurementMax,
-                                              _desiredRangeMin = 1,
-                                              _desiredRangeMax = 10
+                                              _desiredRangeMin = desiredMin,
+                                              _desiredRangeMax = desiredMax
                                           };
             return linearNormalization;
+        }
+
+        public static LinearNormalization WithMeasurementRange(double measurementMin, double measurementMax)
+        {
+            return WithMeasurementAndDesiredRange(measurementMin, measurementMax, 1, 10);
         }
 
         public double ValueFor(double measurement)
