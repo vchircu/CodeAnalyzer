@@ -17,7 +17,7 @@
             var laa = LocalityOfAttributeAccess.Value(m);
             var fdp = ForeignDataProviders.Value(m);
 
-            if (atfd > Few && laa < CommonFractionThreshold.OneThird && fdp > 0 && fdp <= 3)
+            if (atfd > Few && laa < CommonFractionThreshold.OneThird && fdp > 0 && fdp <= 1)
             {
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
