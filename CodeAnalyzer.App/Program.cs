@@ -51,6 +51,7 @@
                 HandleProject(slnFile, outputDirectory, outputFileName);
             }
 
+            Console.WriteLine("Finished running the analysis. Press any key to exit...");
             Console.ReadKey();
         }
 
