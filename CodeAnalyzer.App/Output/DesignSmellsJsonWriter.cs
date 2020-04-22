@@ -1,5 +1,6 @@
 ﻿namespace CodeAnalyzer.App.Output
 {
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -48,8 +49,13 @@
                            File = smell.SourceFile,
                            Name = smell.Name,
                            Category = GetCategory(smell.Name),
-                           Value = smell.Severity.ToString(CultureInfo.InvariantCulture)
+                           Value = RoundToInt(smell.Severity).ToString(CultureInfo.InvariantCulture)
                        };
+        }
+
+        private static int RoundToInt(double value)
+        {
+            return Convert.ToInt32(value);
         }
 
         private static string GetCategory(string name)
