@@ -5,7 +5,7 @@ This repository contains a couple of .NET code analyzers, built with NDepend:
 
 ## Prerequisites
 1. .NET Framework installed
-2. NDepend installed and NDepend license activated 
+2. [NDepend](https://www.ndepend.com/download) installed and NDepend license activated 
 3. All solutions that you want to analyze need to be built
 
 ## Usage
