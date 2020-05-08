@@ -76,14 +76,14 @@
             Logger.Information("**** Analyzing solution {solution} *** ", slnAbsolutePath);
             Logger.Information("\tBuilding NDepend Project");
 
-            var project = NDependProjectHandler.GetOrCreateProjectFromVisualStudioSolution(
+            var result = NDependProjectHandler.GetOrCreateProjectFromVisualStudioSolution(
                 slnAbsolutePath,
                 outputDirectory,
                 outputFileName);
 
-            if (project.HasNoValue)
+            if (result.IsFailure)
             {
-                Logger.Information(" \t Could not create an NDepend project for the solution");
+                Logger.Information(" \t Could not create an NDepend project for the solution. Reason:{error}", result.Error);
                 return;
             }
 
@@ -92,7 +92,7 @@
 
             stopwatch = Stopwatch.StartNew();
             Logger.Information("\tRunning NDepend Analysis");
-            IAnalysisResult analysisResult = NDependProjectHandler.GetAnalysisResult(project.Value, Logger);
+            IAnalysisResult analysisResult = NDependProjectHandler.GetAnalysisResult(result.Value, Logger);
 
             stopwatch.Stop();
             Logger.Information("\tAnalyzed NDepend Project in {Elapsed:000} ms", stopwatch.ElapsedMilliseconds);

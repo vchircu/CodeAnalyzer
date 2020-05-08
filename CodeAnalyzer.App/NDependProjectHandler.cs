@@ -15,12 +15,12 @@
 
     internal static class NDependProjectHandler
     {
-        public static Maybe<IProject> GetOrCreateProjectFromVisualStudioSolution(string slnAbsolutePath, string outputDirectory, string outputFileName)
+        public static Result<IProject> GetOrCreateProjectFromVisualStudioSolution(string slnAbsolutePath, string outputDirectory, string outputFileName)
         {
             var ndependProjectPath = FileNameConventions.BuildNDependProjectFilePath(outputDirectory, outputFileName);
             if (File.Exists(ndependProjectPath))
             {
-                return Maybe<IProject>.From(GetProjectFromNDependFile(ndependProjectPath));
+                return Result.Success(GetProjectFromNDependFile(ndependProjectPath));
             }
 
             var ndependServicesProvider = new NDependServicesProvider();
@@ -28,7 +28,7 @@
 
             if (!assemblies.Any())
             {
-                return Maybe<IProject>.None;
+                return Result.Failure<IProject>("Could not find any assemblies for the solution. Please make sure that the solution is built before running the CodeAnalyzer");
             }
 
             var projectManager = ndependServicesProvider.ProjectManager;
@@ -38,25 +38,13 @@
             project.CodeToAnalyze.SetApplicationAssemblies(assemblies);
             projectManager.SaveProject(project);
 
-            return Maybe<IProject>.From(project);
+            return Result.Success(project);
         }
 
         private static IProject GetProjectFromNDependFile(string pathToNDependProject)
         {
             var projectManager = new NDependServicesProvider().ProjectManager;
             var project = projectManager.LoadProject(pathToNDependProject.ToAbsoluteFilePath());
-            return project;
-        }
-
-        private static IProject CreateTemporaryProjectFrom(string slnAbsolutePath)
-        {
-            var ndependServicesProvider = new NDependServicesProvider();
-           
-            List<IAbsoluteFilePath> assemblies = GetAssembliesFromSolution(slnAbsolutePath, ndependServicesProvider);
-
-            var projectManager = ndependServicesProvider.ProjectManager;
-            var project = projectManager.CreateTemporaryProject(assemblies, TemporaryProjectMode.TemporaryNewer);
-
             return project;
         }
 
