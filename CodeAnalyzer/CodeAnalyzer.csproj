@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSharpFunctionalExtensions, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CSharpFunctionalExtensions.2.3.0\lib\net461\CSharpFunctionalExtensions.dll</HintPath>
+    <Reference Include="CSharpFunctionalExtensions, Version=2.18.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSharpFunctionalExtensions.2.18.0\lib\net472\CSharpFunctionalExtensions.dll</HintPath>
     </Reference>
     <Reference Include="NDepend.API, Version=2019.3.0.9290, Culture=neutral, PublicKeyToken=02f4313b97e3f583, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
