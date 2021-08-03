@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CodeAnalyzer.App.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSharpFunctionalExtensions, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CSharpFunctionalExtensions.2.3.0\lib\net461\CSharpFunctionalExtensions.dll</HintPath>
