@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using CodeAnalyzer;
     using CodeAnalyzer.Metrics;
 
     using CSharpFunctionalExtensions;
@@ -14,10 +13,27 @@
     public class StructuralRelation
     {
         public int HierarchyRelations { get; private set; }
+
         public string Source { get; private set; }
+
         public string Target { get; private set; }
+
         public int NumberOfCallsToMethods { get; private set; }
+
         public int NumberOfCallsToPropertiesOrFields { get; private set; }
+
+        public static StructuralRelation Aggregate(IEnumerable<StructuralRelation> structuralRelations)
+        {
+            List<StructuralRelation> relations = structuralRelations.ToList();
+            return new StructuralRelation
+                       {
+                           Source = relations.First().Source,
+                           Target = relations.First().Target,
+                           HierarchyRelations = relations.Sum(r => r.HierarchyRelations),
+                           NumberOfCallsToMethods = relations.Sum(r => r.NumberOfCallsToMethods),
+                           NumberOfCallsToPropertiesOrFields = relations.Sum(r => r.NumberOfCallsToPropertiesOrFields)
+                       };
+        }
 
         public static Maybe<StructuralRelation> From(IType source, IType target)
         {
@@ -29,7 +45,7 @@
             var sourceSourceFile = source.SourceFile();
             var targetSourceFile = target.SourceFile();
 
-            if (string.IsNullOrWhiteSpace(sourceSourceFile) || string.IsNullOrWhiteSpace(targetSourceFile))
+            if (string.IsNullOrWhiteSpace(sourceSourceFile) || string.IsNullOrWhiteSpace(targetSourceFile) || sourceSourceFile == targetSourceFile)
             {
                 return Maybe<StructuralRelation>.None;
             }
@@ -37,26 +53,39 @@
             var isInnerClass = source.ChildTypes.Contains(target);
 
             HashSet<IMethod> hierarchySpecificRelatedMethods = HierarchySpecificRelatedMethods(source, target);
-            var externalCalls = isInnerClass ? 0 : target.Methods.Count(m => m.IsFunctional() && source.IsUsingMethod(m) && !hierarchySpecificRelatedMethods.Contains(m));
+            var externalCalls = isInnerClass
+                                    ? 0
+                                    : target.Methods.Count(
+                                        m => m.IsFunctional() && source.IsUsingMethod(m)
+                                                              && !hierarchySpecificRelatedMethods.Contains(m));
 
             HashSet<IMember> hierarchyDataAccess = HierarchyDataAccess(source, target);
-            var externalData = isInnerClass ? 0 : target.Members.Count(m => m.IsPropertyOrField() && source.IsUsing(m) && !hierarchyDataAccess.Contains(m));
+            var externalData = isInnerClass
+                                   ? 0
+                                   : target.Members.Count(
+                                       m => m.IsPropertyOrField() && source.IsUsing(m)
+                                                                  && !hierarchyDataAccess.Contains(m));
 
-            var hierarchySpecificRelations = HierarchySpecificRelations(source, target, hierarchySpecificRelatedMethods, hierarchyDataAccess);
-           
+            var hierarchySpecificRelations = HierarchySpecificRelations(
+                source,
+                target,
+                hierarchySpecificRelatedMethods,
+                hierarchyDataAccess);
+
             if (hierarchySpecificRelations == 0 && externalCalls == 0 && externalData == 0)
             {
                 return Maybe<StructuralRelation>.None;
             }
 
-            return Maybe<StructuralRelation>.From(new StructuralRelation
-            {
-                HierarchyRelations = hierarchySpecificRelations,
-                NumberOfCallsToMethods = externalCalls,
-                NumberOfCallsToPropertiesOrFields = externalData,
-                Source = sourceSourceFile,
-                Target = targetSourceFile
-            });
+            return Maybe<StructuralRelation>.From(
+                new StructuralRelation
+                    {
+                        HierarchyRelations = hierarchySpecificRelations,
+                        NumberOfCallsToMethods = externalCalls,
+                        NumberOfCallsToPropertiesOrFields = externalData,
+                        Source = sourceSourceFile,
+                        Target = targetSourceFile
+                    });
         }
 
         private static int HierarchySpecificRelations(
@@ -80,12 +109,14 @@
 
         private static HashSet<IMember> HierarchyDataAccess(IType source, IType target)
         {
-            return source.Methods.SelectMany(m => m.MembersUsed).Where(m => m.ParentType == target && m.IsPropertyOrField() && m.IsProtected).ToHashSetEx();
+            return source.Methods.SelectMany(m => m.MembersUsed)
+                .Where(m => m.ParentType == target && m.IsPropertyOrField() && m.IsProtected).ToHashSetEx();
         }
 
         private static HashSet<IMethod> HierarchyMethodCalls(IType source, IType target)
         {
-            return source.Methods.SelectMany(m => m.MethodsCalled).Where(m => m.ParentType == target && m.IsProtected && m.IsFunctional()).ToHashSetEx();
+            return source.Methods.SelectMany(m => m.MethodsCalled)
+                .Where(m => m.ParentType == target && m.IsProtected && m.IsFunctional()).ToHashSetEx();
         }
 
         private static HashSet<IMethod> AllBaseOverriddenMethods(IType source, IType target)

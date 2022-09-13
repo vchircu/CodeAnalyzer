@@ -26,15 +26,23 @@
             var stopWatch = Stopwatch.StartNew();
 
             HashSet<IType> types = codeBase.Application.Types.ToHashSetEx();
+            
             List<Maybe<StructuralRelation>> relations =
                 (from source in types from target in types select StructuralRelation.From(source, target)).ToList();
 
             IEnumerable<StructuralRelation> structuralRelations = relations.Where(r => r.HasValue).Select(r => r.Value).ToList();
 
+            structuralRelations = GroupByFiles(structuralRelations);
             stopWatch.Stop();
             _logger.Information("\tBuilt Structural Relations in {Elapsed:000} ms", stopWatch.ElapsedMilliseconds);
 
             return structuralRelations;
+        }
+
+        private static IEnumerable<StructuralRelation> GroupByFiles(IEnumerable<StructuralRelation> structuralRelations)
+        {
+            return structuralRelations.GroupBy(r => r.Source + r.Target).Select(
+                g => StructuralRelation.Aggregate(g.ToList()));
         }
     }
 }
