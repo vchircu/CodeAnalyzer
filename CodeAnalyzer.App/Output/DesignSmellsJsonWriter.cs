@@ -26,7 +26,7 @@
             var serializerSettings =
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
-            var serializeObject = JsonConvert.SerializeObject(designFlaws, serializerSettings);
+            var serializeObject = JsonConvert.SerializeObject(designFlaws.OrderBy(df => df.File), serializerSettings);
 
             File.WriteAllText(output, serializeObject);
         }
@@ -42,6 +42,8 @@
 
         public string Value { get; set; }
 
+        public IDictionary<string, double> Metrics { get; set; }
+
         public static DesignFlaw From(DesignSmell smell)
         {
             return new DesignFlaw
@@ -49,7 +51,8 @@
                            File = smell.SourceFile,
                            Name = smell.Name,
                            Category = GetCategory(smell.Name),
-                           Value = RoundToInt(smell.Severity).ToString(CultureInfo.InvariantCulture)
+                           Value = RoundToInt(smell.Severity).ToString(CultureInfo.InvariantCulture),
+                           Metrics = smell.Metrics
                        };
         }
 
