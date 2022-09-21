@@ -1,5 +1,7 @@
 ﻿namespace CodeAnalyzer.DetectionStrategies
 {
+    using System.Collections.Generic;
+
     using CodeAnalyzer.Metrics;
     using CodeAnalyzer.Thresholds;
 
@@ -20,7 +22,7 @@
             var bovr = BaseClassOverridingRatio.Value(t);
             var nprotm = NumberOfProtectedMembers.Value(t);
             var wmc = WeightedMethodCount.Value(t);
-            var nom = t.NbMethods;
+            var nom = t.NbMethods.GetValueOrDefault();
             var amw = AverageMethodWeight.Value(t);
 
             var childClassIgnoresBequest = nprotm > Few && bur < CommonFractionThreshold.OneThird
@@ -35,7 +37,16 @@
                             Name = "Refused Parent Bequest",
                             Severity = CalculateSeverity(bur, bovr),
                             SourceFile = t.SourceFile(),
-                            Source = t
+                            Source = t,
+                            Metrics = new Dictionary<string, double>
+                                          {
+                                              { "bur", bur },
+                                              { "bovr", bovr },
+                                              { "nprotm", nprotm },
+                                              { "wmc", wmc },
+                                              { "nom",  nom},
+                                              { "amw", amw }
+                                          }
                         });
             }
 

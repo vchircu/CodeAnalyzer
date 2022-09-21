@@ -1,5 +1,7 @@
 ﻿namespace CodeAnalyzer.DetectionStrategies
 {
+    using System.Collections.Generic;
+
     using CodeAnalyzer.Metrics;
     using CodeAnalyzer.Thresholds;
 
@@ -22,8 +24,14 @@
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
                         {
-                            Name = "Feature Envy", Severity = CalculateSeverity(atfd), SourceFile = m.ParentType.SourceFile(), Source = m
-                        });
+                            Name = "Feature Envy", Severity = CalculateSeverity(atfd), SourceFile = m.ParentType.SourceFile(), Source = m,
+                            Metrics = new Dictionary<string, double>
+                                          {
+                                              { "atfd", atfd },
+                                              { "laa", laa },
+                                              { "fdp", fdp }
+                                          }
+                    });
             }
 
             return Maybe<DesignSmell>.None;

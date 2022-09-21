@@ -52,7 +52,8 @@
                              SourceFile = g.First().SourceFile,
                              Name = g.First().Name,
                              Severity = g.Sum(d => d.Severity),
-                             Source = g.First().Source
+                             Source = g.First().Source,
+                             Metrics = g.First().Metrics
                          });
         }
 

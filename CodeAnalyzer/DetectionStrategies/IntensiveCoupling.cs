@@ -1,5 +1,7 @@
 ﻿namespace CodeAnalyzer.DetectionStrategies
 {
+    using System.Collections.Generic;
+
     using CodeAnalyzer.Metrics;
     using CodeAnalyzer.Thresholds;
 
@@ -15,7 +17,7 @@
             var Few = 5;
             var ShortMemoryCap = 7;
 
-            var maxNesting = m.ILNestingDepth;
+            var maxNesting = m.ILNestingDepth.GetValueOrDefault();
             var cint = CouplingIntensity.Value(m);
             var cdisp = CouplingDispersion.Value(m);
 
@@ -28,7 +30,11 @@
                             Name = "Intensive Coupling",
                             Severity = CalculateSeverity(cint, cdisp),
                             SourceFile = m.ParentType.SourceFile(),
-                            Source = m
+                            Source = m,
+                            Metrics = new Dictionary<string, double>
+                                          {
+                                              { "cint", cint }, { "cdisp", cdisp }, { "maxNesting", maxNesting }
+                                          }
                         });
             }
 

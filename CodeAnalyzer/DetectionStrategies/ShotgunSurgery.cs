@@ -1,5 +1,6 @@
 ﻿namespace CodeAnalyzer.DetectionStrategies
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using CodeAnalyzer.Metrics;
@@ -27,8 +28,13 @@
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
                         {
-                            Name = "Shotgun Surgery", Severity = CalculateSeverity(cm, cc, m), SourceFile = m.ParentType.SourceFile(), Source = m
-                        });
+                            Name = "Shotgun Surgery", Severity = CalculateSeverity(cm, cc, m), SourceFile = m.ParentType.SourceFile(), Source = m,
+                            Metrics = new Dictionary<string, double>
+                                          {
+                                              { "cm", cm },
+                                              { "cc", cc }
+                                          }
+                    });
             }
 
             return Maybe<DesignSmell>.None;

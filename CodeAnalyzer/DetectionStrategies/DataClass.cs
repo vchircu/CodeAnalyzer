@@ -25,14 +25,20 @@
             var noam = accessors.Count;
 
             if (woc < CommonFractionThreshold.OneThird
-                && (nopa + noam > Few && wmc < 31
-                    || nopa + noam > 8 && wmc < 47))
+                && (nopa + noam > Few && wmc < 31 || nopa + noam > 8 && wmc < 47))
             {
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
-                        {
-                            Name = "Data Class", Severity = CalculateSeverity(publicAttributes, accessors, t), SourceFile = t.SourceFile(), Source = t
-                        });
+                    {
+                        Name = "Data Class",
+                        Severity = CalculateSeverity(publicAttributes, accessors, t),
+                        SourceFile = t.SourceFile(),
+                        Source = t,
+                        Metrics = new Dictionary<string, double>
+                                          {
+                                              { "woc", woc }, { "wmc", wmc }, { "nopa", nopa }, { "noam", noam }
+                                          }
+                    });
             }
 
             return Maybe<DesignSmell>.None;
@@ -54,8 +60,8 @@
 
         private static double SeverityExploit(IList<IMember> publicAttributes, IList<IMember> accessors, IType type)
         {
-            HashSet<IMethod> methodsUsingPublicAttributes =
-                publicAttributes.Select(pa => pa.AsField).SelectMany(f => f.MethodsUsingMe).ToHashSetEx();
+            HashSet<IMethod> methodsUsingPublicAttributes = publicAttributes.Select(pa => pa.AsField)
+                .SelectMany(f => f.MethodsUsingMe).ToHashSetEx();
             HashSet<IMethod> methodsUsingAccessors =
                 accessors.Select(a => a.AsMethod).SelectMany(m => m.MethodsCallingMe).ToHashSetEx();
 

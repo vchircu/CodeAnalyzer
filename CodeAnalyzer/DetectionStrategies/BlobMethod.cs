@@ -1,5 +1,7 @@
 ﻿namespace CodeAnalyzer.DetectionStrategies
 {
+    using System.Collections.Generic;
+
     using CodeAnalyzer.Metrics;
 
     using CSharpFunctionalExtensions;
@@ -25,8 +27,15 @@
                 return Maybe<DesignSmell>.From(
                     new DesignSmell
                         {
-                            Name = "Blob Method", Severity = CalculateSeverity(loc, cyclo, maxNesting), SourceFile = m.ParentType.SourceFile(), Source = m
-                        });
+                            Name = "Blob Method", Severity = CalculateSeverity(loc, cyclo, maxNesting), SourceFile = m.ParentType.SourceFile(), Source = m,
+                            Metrics = new Dictionary<string, double>
+                                          {
+                                              { "loc", loc },
+                                              { "cyclo", cyclo },
+                                              { "noav", noav },
+                                              { "maxNesting", maxNesting }
+                                          }
+                    });
             }
 
             return Maybe<DesignSmell>.None;
